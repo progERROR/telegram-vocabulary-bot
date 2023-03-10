@@ -1,0 +1,14 @@
+# node modules
+node_modules
+
+#build distributable
+dist
+
+#for WebStorm IDE
+.idea
+
+#for MacOS
+.DS_Store
+
+#dotenv file
+.env
