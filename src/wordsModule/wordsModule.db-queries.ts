@@ -11,8 +11,7 @@ export const createWordQuery = (
   translated_version: string
 ) =>
   `INSERT INTO words (english_version, translated_version)
-     VALUES ('${english_version}', '${translated_version}')
-     RETURNING *;
+     VALUES ('${english_version}', '${translated_version}');
     `;
 
 export const setWordUsedQuery = (id: number) => `
