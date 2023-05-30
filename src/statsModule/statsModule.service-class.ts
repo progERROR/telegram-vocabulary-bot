@@ -27,7 +27,7 @@ export class StatsModuleServiceClass {
 
       return new SuccessStatusClass("Stats has been created successfully");
     } catch (error: any) {
-      return new DBErrorStatusClass(error.message);
+      throw new DBErrorStatusClass(error.message);
     }
   }
 
@@ -53,7 +53,7 @@ export class StatsModuleServiceClass {
 
       return new SuccessStatusClass("Stats has been updated successfully");
     } catch (error: any) {
-      return new DBErrorStatusClass(error.message);
+      throw new DBErrorStatusClass(error.message);
     }
   }
 

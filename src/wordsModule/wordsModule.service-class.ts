@@ -92,7 +92,7 @@ export class WordsModuleServiceClass {
 
       return new SuccessStatusClass("Word has been added successfully");
     } catch (error: any) {
-      return new DBErrorStatusClass(error.message);
+      throw new DBErrorStatusClass(error.message);
     }
   }
 
@@ -107,7 +107,7 @@ export class WordsModuleServiceClass {
         `Field is_used_per_day successfully set true in word with id: ${id}`
       );
     } catch (error: any) {
-      return new DBErrorStatusClass(error.message);
+      throw new DBErrorStatusClass(error.message);
     }
   }
 
@@ -122,7 +122,7 @@ export class WordsModuleServiceClass {
         `Field is_used_per_day successfully set false in all words`
       );
     } catch (error: any) {
-      return new DBErrorStatusClass(error.message);
+      throw new DBErrorStatusClass(error.message);
     }
   }
 
@@ -143,7 +143,7 @@ export class WordsModuleServiceClass {
         );
       }
     } catch (error: any) {
-      return new DBErrorStatusClass(error.message);
+      throw new DBErrorStatusClass(error.message);
     }
   }
 }
