@@ -1,5 +1,4 @@
 import DBHandler from "../db/pg/index";
-import { Logger } from "winston";
 import {
   createWordQuery,
   deleteWordByEnglishVersionQuery,
@@ -14,14 +13,14 @@ import { SuccessStatusClass } from "../types/statuses/successStatus.class";
 import { StatusInterface } from "../types/statuses/status.interface";
 import {
   DBErrorStatusClass,
-  MoreThanOneWordErrorStatusClass,
   NotFoundErrorStatusClass,
 } from "../types/statuses/errors.classes";
+import { Logger } from "../logger/logger";
 
 const Typo = require("typo-js");
 const translate = require("@iamtraction/google-translate");
 
-const dictionary = new Typo();
+const dictionary = new Typo("en_US");
 
 const logger = new Logger();
 DBHandler.connect().then(() =>
@@ -68,14 +67,8 @@ export class WordsModuleServiceClass {
 
   public async addNewWord(
     englishVersion: string
-  ): Promise<WordsInterface | StatusInterface | string[]> {
+  ): Promise<StatusInterface | string[]> {
     logger.info(`Adding new word to db`);
-
-    if (englishVersion.split(" ").length > 1) {
-      return new MoreThanOneWordErrorStatusClass(
-        "Can not save a phrase or a sentence"
-      );
-    }
 
     const isSpelledCorrectly = dictionary.check(englishVersion);
     if (!isSpelledCorrectly) {
@@ -86,7 +79,7 @@ export class WordsModuleServiceClass {
       const translatedVersion = await translate(englishVersion, { to: "uk" });
       const addNewWordString = createWordQuery(
         englishVersion,
-        translatedVersion
+        translatedVersion.text
       );
       await DBHandler.executeQuery(addNewWordString);
 

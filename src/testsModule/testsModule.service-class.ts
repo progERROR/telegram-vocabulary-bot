@@ -1,13 +1,13 @@
 import { WordsModuleServiceClass } from "../wordsModule/wordsModule.service-class";
 import { StatsModuleServiceClass } from "../statsModule/statsModule.service-class";
 import { PuppeteerModuleServiceClass } from "../puppeteerModule/puppeteerModule.service-class";
-import { Logger } from "winston";
 import { NotFoundErrorStatusClass } from "../types/statuses/errors.classes";
 import { FirstLevelTestInterface } from "../types/statuses/firstLevelTest.interface";
 import { StatusInterface } from "../types/statuses/status.interface";
 import { SecondLevelTestInterface } from "../types/statuses/secondLevelTest.interface";
 import { WordsInterface } from "../types/words.interface";
 import { ThirdLevelTestInterface } from "../types/statuses/thirdLevelTest.interface";
+import { Logger } from "../logger/logger";
 
 const logger = new Logger();
 
@@ -27,7 +27,7 @@ export class TestsModuleServiceClass {
 
       let unusedWordsArray = await wordsService.getUnusedWords();
 
-      if (!unusedWordsArray.length) {
+      if (unusedWordsArray.length < 3) {
         const setAllWordsUnusedResult = await wordsService.setAllWordsUnused();
         logger.info(setAllWordsUnusedResult.message);
       }
@@ -73,7 +73,9 @@ export class TestsModuleServiceClass {
       return {
         translatedVersion: wordsForTestResult[0].translated_version,
         rightAnswer: wordsForTestResult[0].english_version,
-        answersArray: wordsForTestResult.map((word) => word.english_version),
+        answersArray: wordsForTestResult
+          .map((word) => word.english_version)
+          .sort(() => 0.5 - Math.random()),
       };
     } catch (error: any) {
       throw error;
@@ -114,14 +116,19 @@ export class TestsModuleServiceClass {
 
       return {
         rightAnswer: wordsForTestResult[0].english_version,
-        sentence: randomSentence,
+        sentence: randomSentence
+          .split(`${wordsForTestResult[0].english_version}`)
+          .join("___"),
       };
     } catch (error: any) {
       throw error;
     }
   }
 
-  public async handleTestResult(isAnswerRight: boolean, testLevel: number) {
+  public async handleTestResult(
+    isAnswerRight: boolean,
+    testLevel: number
+  ): Promise<void> {
     try {
       let updateStatsResult;
       if (isAnswerRight) {

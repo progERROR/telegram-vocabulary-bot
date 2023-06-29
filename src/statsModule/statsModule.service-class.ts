@@ -1,4 +1,3 @@
-import { Logger } from "winston";
 import DBHandler from "../db/pg";
 import {
   createStatsQuery,
@@ -10,6 +9,7 @@ import { DBErrorStatusClass } from "../types/statuses/errors.classes";
 import { StatusInterface } from "../types/statuses/status.interface";
 import { SuccessStatusClass } from "../types/statuses/successStatus.class";
 import { ChartsHandlerClass } from "../services/charts.handler-class";
+import { Logger } from "../logger/logger";
 
 const logger = new Logger();
 const chartsHandlerClass = new ChartsHandlerClass();
@@ -45,9 +45,9 @@ export class StatsModuleServiceClass {
       );
 
       const updateStatsString = updateStatsQuery(
-        getLatestStatsDataResponse.rows.points + points,
-        getLatestStatsDataResponse.rows.correct_answers + correctAnswers,
-        getLatestStatsDataResponse.rows.incorrect_answers + incorrectAnswers
+        getLatestStatsDataResponse.rows[0].points + points,
+        getLatestStatsDataResponse.rows[0].correct_answers + correctAnswers,
+        getLatestStatsDataResponse.rows[0].incorrect_answers + incorrectAnswers
       );
       await DBHandler.executeQuery(updateStatsString);
 

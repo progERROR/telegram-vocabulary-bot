@@ -1,5 +1,5 @@
 import { StatsInterface } from "../types/stats.interface";
-import ChartJSImage from "chart.js-image";
+import ChartJsImage from "chartjs-to-image";
 
 export class ChartsHandlerClass {
   private generateChart(
@@ -23,15 +23,15 @@ export class ChartsHandlerClass {
       },
     };
 
-    const chart = new ChartJSImage().c(JSON.stringify(chartConfig));
-
-    return chart.toURL();
+    const chart = new ChartJsImage();
+    chart.setConfig(chartConfig);
+    return chart.getUrl();
   }
 
   public generateScoreChart(statsArray: StatsInterface[]): string {
     const pointsArray = statsArray.map((stats) => stats.points);
     const datesArray = statsArray.map(
-      (stats) => stats.created_at.split(" ")[0]
+      (stats) => stats.created_at.toISOString().split("T")[0]
     );
 
     return this.generateChart(
@@ -50,7 +50,7 @@ export class ChartsHandlerClass {
         stats.correct_answers
     );
     const datesArray = statsArray.map(
-      (stats) => stats.created_at.split(" ")[0]
+      (stats) => stats.created_at.toISOString().split("T")[0]
     );
 
     return this.generateChart(

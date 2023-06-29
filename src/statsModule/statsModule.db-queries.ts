@@ -19,7 +19,7 @@ export const updateStatsQuery = (
   correct_answers: number,
   incorrect_answers: number
 ) => {
-  let updateStatsString = `UPDATE payment_methods SET `;
+  let updateStatsString = `UPDATE stats SET `;
 
   const builtQueryArray = [];
   const dtoArray = Object.entries({

@@ -4,7 +4,7 @@ export const getAllUnusedWordsQuery = () =>
   `SELECT * FROM words WHERE is_used_per_day = false;`;
 
 export const getWordByEnglishVersionQuery = (english_version: string) =>
-  `SELECT * FROM payment_methods WHERE english_version = ${english_version};`;
+  `SELECT * FROM words WHERE english_version = '${english_version}';`;
 
 export const createWordQuery = (
   english_version: string,
@@ -23,4 +23,4 @@ export const setAllWordsUnusedQuery = () =>
   `UPDATE words SET is_used_per_day = false;`;
 
 export const deleteWordByEnglishVersionQuery = (english_version: string) =>
-  `DELETE FROM payment_methods WHERE english_version = ${english_version};`;
+  `DELETE FROM words WHERE english_version = '${english_version}';`;

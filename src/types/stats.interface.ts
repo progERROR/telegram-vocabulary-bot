@@ -3,5 +3,5 @@ export interface StatsInterface {
   points: number;
   correct_answers: number;
   incorrect_answers: number;
-  created_at: string;
+  created_at: Date;
 }
